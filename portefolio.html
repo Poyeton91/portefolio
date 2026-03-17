@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sacha Poyeton — Portfolio</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: rgba(255,255,255,0.06);
+      --bg-card: rgba(10, 20, 36, 0.72);
+      --stroke: rgba(255,255,255,0.11);
+      --text: #ecf3ff;
+      --muted: #a9b7cf;
+      --accent: #67e8f9;
+      --accent-2: #a78bfa;
+      --accent-3: #22c55e;
+      --shadow: 0 20px 80px rgba(0,0,0,0.38);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
+      --max: 1220px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(103,232,249,0.18), transparent 22%),
+        radial-gradient(circle at 88% 16%, rgba(167,139,250,0.16), transparent 24%),
+        radial-gradient(circle at 48% 82%, rgba(34,197,94,0.10), transparent 20%),
+        linear-gradient(180deg, #3bdfd0 0%, #6a368b 50%, #351551 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      width: 42rem;
+      height: 42rem;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.22;
+    }
+
+    body::before {
+      background: var(--accent);
+      top: -12rem;
+      right: -10rem;
+    }
+
+    body::after {
+      background: var(--accent-2);
+      bottom: -16rem;
+      left: -12rem;
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+      z-index: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, rgba(6, 16, 29, 0.78), rgba(6, 16, 29, 0.42));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(103,232,249,0.22), rgba(167,139,250,0.26));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 8px 24px rgba(0,0,0,0.24);
+    }
+
+    .brand-mark span {
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .nav a {
+      font-size: 0.95rem;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: 0.25s ease;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .hero {
+      padding: 52px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .hero-side,
+    .panel,
+    .project-card,
+    .timeline-card,
+    .contact-card,
+    .skill-chip,
+    .cert-card,
+    .category-card {
+      background: linear-gradient(180deg, rgba(15, 26, 45, 0.76), rgba(8, 17, 31, 0.72));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      border-radius: var(--radius-xl);
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(103,232,249,0.08), transparent 30%, transparent 70%, rgba(167,139,250,0.08));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #d8e6ff;
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 20px rgba(103,232,249,0.9);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.8rem, 7vw, 5.3rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      max-width: 10ch;
+    }
+
+    .lead {
+      margin: 22px 0 0;
+      font-size: 1.18rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+
+    .quote {
+      margin-top: 28px;
+      padding: 22px 22px 22px 24px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(103,232,249,0.10), rgba(167,139,250,0.08));
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    .quote::before {
+      content: "“";
+      position: absolute;
+      top: 4px;
+      left: 18px;
+      font-size: 3.4rem;
+      line-height: 1;
+      color: rgba(255,255,255,0.16);
+      font-family: Georgia, serif;
+    }
+
+    .quote p {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 1.04rem;
+      color: #eef5ff;
+      line-height: 1.7;
+    }
+
+    .hero-side {
+      border-radius: var(--radius-xl);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-side::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -30% auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(103,232,249,0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-side h2 {
+      margin: 0;
+      font-size: 1rem;
+      color: #dbe8ff;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .stat .value {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+    }
+
+    .stat p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .hero-note {
+      padding: 18px 18px 18px 20px;
+      border-left: 3px solid rgba(103,232,249,0.55);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      color: #d7e3f9;
+      line-height: 1.7;
+      font-size: 0.98rem;
+    }
+
+    main {
+      padding-bottom: 80px;
+    }
+
+    .section {
+      padding: 18px 0;
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: clamp(1.65rem, 4vw, 2.5rem);
+      letter-spacing: -0.04em;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 62ch;
+      line-height: 1.7;
+    }
+
+    .panel {
+      border-radius: var(--radius-xl);
+      padding: 28px;
+    }
+
+    .ambition-showcase {
+      position: relative;
+      overflow: visible;
+      min-height: 320px;
+      padding: 32px;
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(103,232,249,0.16), transparent 24%),
+        radial-gradient(circle at 90% 80%, rgba(167,139,250,0.18), transparent 28%),
+        linear-gradient(145deg, rgba(15, 28, 48, 0.92), rgba(7, 16, 29, 0.94));
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow);
+    }
+
+    .ambition-orbit {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+
+    .orbit-pill {
+      position: absolute;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #dfe9ff;
+      backdrop-filter: blur(10px);
+      max-width: 260px;
+      line-height: 1.55;
+      font-size: 0.94rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+
+    .orbit-pill.top-right { top: 26px; right: 24px; }
+    .orbit-pill.bottom-left { bottom: 26px; left: 24px; }
+    .orbit-pill.bottom-right { bottom: 34px; right: 42px; }
+
+    .ambition-core {
+      position: relative;
+      z-index: 1;
+      width: min(760px, 100%);
+      margin: 24px auto;
+      padding: 34px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(103,232,249,0.16), rgba(167,139,250,0.12));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.14);
+      transform: rotate(-1.3deg);
+    }
+
+    .ambition-core::before {
+      content: "Vision";
+      position: absolute;
+      top: -16px;
+      left: 26px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #03131d;
+      background: linear-gradient(135deg, var(--accent), #c4b5fd);
+      box-shadow: 0 10px 24px rgba(103,232,249,0.26);
+    }
+
+    .ambition-core p {
+      margin: 0;
+      font-size: clamp(1.08rem, 2vw, 1.28rem);
+      line-height: 1.95;
+      color: #f4f8ff;
+      letter-spacing: 0.01em;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .timeline-card,
+    .contact-card,
+    .cert-card,
+    .category-card {
+      border-radius: 24px;
+      padding: 22px;
+      height: 100%;
+    }
+
+    .card-label {
+      display: inline-flex;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      color: #d7e7ff;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 16px;
+    }
+
+    .timeline-card h3,
+    .project-card h3,
+    .contact-card h3,
+    .cert-card h3,
+    .category-card h3 {
+      margin: 0;
+      font-size: 1.24rem;
+      line-height: 1.35;
+    }
+
+    .subline {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .experience-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0 0;
+      color: #dbe8ff;
+      font-size: 0.95rem;
+    }
+
+    .pill {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .bullet-list {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 20px;
+      color: #dce7fb;
+      line-height: 1.65;
+    }
+
+    .bullet-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72em;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 18px rgba(103,232,249,0.55);
+    }
+
+    .skills-sections {
+      display: grid;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .category-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(103,232,249,0.05), transparent 45%, rgba(167,139,250,0.06));
+      pointer-events: none;
+    }
+
+    .category-card.full {
+      grid-column: 1 / -1;
+    }
+
+    .skills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .skill-chip {
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #eff6ff;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .skill-chip:hover {
+      transform: translateY(-3px);
+      border-color: rgba(103,232,249,0.4);
+      background: linear-gradient(135deg, rgba(103,232,249,0.12), rgba(167,139,250,0.08));
+    }
+
+    .skills-grid-modern {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .skill-block {
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .skill-line {
+      display: grid;
+      grid-template-columns: minmax(130px, 170px) 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .skill-line-title {
+      font-weight: 700;
+      color: #f5f9ff;
+      line-height: 1.45;
+    }
+
+    .skill-line-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .mini-chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #e6efff;
+      font-size: 0.94rem;
+      line-height: 1.35;
+    }
+
+    .languages-panel {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .language-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .language-flag {
+      font-size: 2rem;
+      line-height: 1;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.24));
+    }
+
+    .language-main {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px 16px;
+    }
+
+    .language-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f4f8ff;
+    }
+
+    .language-level {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(103,232,249,0.16), rgba(167,139,250,0.14));
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #eef7ff;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .language-note {
+      margin-top: 6px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .project-card {
+      border-radius: 24px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(103,232,249,0.07), transparent 45%, rgba(167,139,250,0.08));
+      pointer-events: none;
+    }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .project-date {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .project-desc {
+      color: #dbe7fb;
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f4f8ff;
+      transition: 0.25s ease;
+    }
+
+    .project-link:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .cert-meta {
+      margin-top: 12px;
+      display: grid;
+      gap: 10px;
+      color: #dce7fb;
+      line-height: 1.6;
+    }
+
+    .cert-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .cert-tag {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #dce8ff;
+      font-size: 0.84rem;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .contact-item {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .contact-kicker {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9eb0ca;
+      margin-bottom: 8px;
+    }
+
+    .contact-value {
+      font-size: 1.06rem;
+      line-height: 1.6;
+      color: #f3f8ff;
+      word-break: break-word;
+    }
+
+    .bookmark-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bookmark-visual {
+      display: grid;
+      place-items: center;
+      min-height: 100%;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(103,232,249,0.18), transparent 28%),
+        radial-gradient(circle at 70% 80%, rgba(167,139,250,0.20), transparent 24%),
+        linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 28px;
+      min-height: 290px;
+      text-align: center;
+    }
+
+    .bookmark-visual .icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 2rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+      margin: 0 auto 18px;
+    }
+
+    .bookmark-visual h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .bookmark-visual p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 34ch;
+    }
+
+    footer {
+      padding: 24px 0 42px;
+      color: #92a4bf;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .contact-grid,
+      .cert-grid,
+      .projects-grid,
+      .grid-3,
+      .experience-grid,
+      .skills-sections,
+      .skills-grid-modern {
+      display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .orbit-pill {
+        position: static;
+        margin-top: 14px;
+        max-width: none;
+      }
+
+      .ambition-showcase {
+        min-height: auto;
+      }
+
+      .ambition-core {
+        width: 100%;
+        margin: 12px 0 0;
+        transform: none;
+      }
+
+      h1 {
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(calc(100% - 20px), var(--max));
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding-top: 28px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .panel,
+      .project-card,
+      .timeline-card,
+      .contact-card,
+      .cert-card,
+      .category-card,
+      .ambition-showcase,
+      .ambition-core {
+        border-radius: 22px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .panel,
+      .ambition-showcase {
+        padding: 22px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .ambition-core {
+        padding: 24px;
+      }
+
+      .skill-line,
+      .language-card {
+        grid-template-columns: 1fr;
+      }
+
+      .language-flag {
+        font-size: 1.8rem;
+      }
+    }
+    .hero-main {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.hero-content {
+  flex: 1;
+}
+
+.hero-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.2);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  flex-shrink: 0;
+}
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-mark"><span>SP</span></div>
+        <div>Sacha Poyeton</div>
+      </div>
+      <nav class="nav">
+        <a href="#ambitions">Ambitions</a>
+        <a href="#parcours">Parcours</a>
+        <a href="#experience">Expérience</a>
+        <a href="#competences">Compétences</a>
+        <a href="#projets">Projets</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-main reveal">
+
+  <img 
+    src="https://i.imgur.com/KoZLthWl.jpg" 
+    alt="Photo de Sacha Poyeton" 
+    class="hero-photo"
+  >
+
+  <div class="hero-content">
+    <div class="eyebrow">Portfolio • Informatique • Création</div>
+    <h1>Sacha Poyeton</h1>
+    <p class="lead">
+      Étudiant orienté création, développement et utilité concrète. J’aime concevoir des logiciels,
+      des outils et des interfaces qui servent vraiment, avec une attention particulière à la clarté,
+      à l’expérience globale et à la diversité des défis.
+    </p>
+    <div class="quote">
+      <p>Étudiant en informatique à l’IUT d’Orsay | Université Paris-Saclay.</p>
+    </div>
+  </div>
+
+</div>
+
+        <aside class="hero-side reveal">
+          <div>
+            <div class="stats" aria-label="Chiffres clés">
+              <div class="stat">
+                <div class="value">10+</div>
+                <p>Projets réalisés</p>
+              </div>
+              <div class="stat">
+                <div class="value">5+</div>
+                <p>Années d’expérience en informatique</p>
+              </div>
+            </div>
+          </div>
+          <div class="hero-note">
+            Une approche qui mélange technique, créativité, rigueur et intérêt pour la gestion de projet,
+            avec l’envie de construire des solutions utiles dans des contextes concrets.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="ambitions" class="section reveal">
+      <div class="section-header">
+        <div>
+          <h2>Projets et ambitions</h2>
+        </div>
+        
+      </div>
+      <div class="ambition-showcase panel">
+        <div class="ambition-orbit" aria-hidden="true">
+          <div class="orbit-pill top-right">J’aime avoir des tâches diverses et variées, ne pas faire la même chose au quotidien et apprendre perpétuellement.</div>
+          <div class="orbit-pill bottom-left">J’ai également un attrait pour la gestion de projet et d’entreprise au delà de l’informatique pure et dure.</div>
+          <div class="orbit-pill bottom-right">Actuellement en BUT 2 Informatique à l’IUT d’Orsay (Université Paris-Saclay), je compte rejoindre le parcours MIAGE pour l’année 2026-2027.</div>
+        </div>
+        <div class="ambition-core">
+          <p>
+            Ce qui me plaît en informatique, c’est la création : la création de logiciels, d’outils, de site etc. dans le but d’appliquer l’informatique à des situations et des utilités réelles. J’aime construire, relier la technique à des besoins concrets et évoluer dans un environnement où l’on apprend sans cesse, avec une vraie ouverture vers la gestion de projet et les dynamiques d’entreprise.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="parcours" class="section reveal">
+      <div class="section-header">
+        <div>
+          <h2>Parcours scolaire</h2>
+        </div>
+      
+      </div>
+      <div class="grid-3">
+        <article class="timeline-card">
+          <div class="card-label">Formation actuelle</div>
+          <h3>IUT d’Orsay | Université Paris Saclay</h3>
+          <p class="subline">BUT Informatique | Bac +3</p>
+        </article>
+        <article class="timeline-card">
+          <div class="card-label">Lycée</div>
+          <h3>Lycée Essouriau aux Ulis</h3>
+          <p class="subline">Baccalauréat général - Mathématique | Numérique Sciences Informatiques | Sciences Économiques et Sociales</p>
+        </article>
+        <article class="timeline-card">
+          <div class="card-label">Collège</div>
+          <h3>College Pierre Mendes-France à Marcoussis</h3>
+          <p class="subline">Brevet des collège</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" class="section reveal">
+      <div class="section-header">
+        <div>
+          <h2>Expérience</h2>
+        </div>
+        
+      </div>
+      <div class="experience-grid">
+        <article class="timeline-card">
+          <div class="card-label">Stage</div>
+          <h3>Technicien IT — Artelia</h3>
+          <div class="experience-meta">
+            <span class="pill">Décembre 2021</span>
+          </div>
+          <ul class="bullet-list">
+            <li>Gestion infrastructure réseau</li>
+            <li>Support informatique pour les employés</li>
+          </ul>
+        </article>
+
+        <article class="timeline-card">
+          <div class="card-label">Emploi étudiant</div>
+          <h3>Coordinateur santé prévention — Service de Santé Etudiantes - Université Paris-Saclay</h3>
+          <div class="experience-meta">
+            <span class="pill">Depuis 2025</span>
+          </div>
+          <ul class="bullet-list">
+            <li>Sensibilisation étudiants sur les thèmes de la santé</li>
+            <li>Distribution flyers, affichage des campagnes en cours</li>
+            <li>Animation de stands sur la santé</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="competences" class="section reveal">
+      <div class="section-header">
+        <div>
+          <h2>Compétences</h2>
+        </div>
+        
+      </div>
+      <div class="skills-grid-modern">
+        <article class="category-card full">
+          <div class="card-label">Compétences techniques</div>
+          <h3>Développement, données et environnements</h3>
+          <div class="skill-block">
+            <div class="skill-line">
+              <div class="skill-line-title">Développement</div>
+              <div class="skill-line-tags">
+                <span class="mini-chip">Développement web</span>
+                <span class="mini-chip">Développement d’applications</span>
+                <span class="mini-chip">Java</span>
+                <span class="mini-chip">Python</span>
+                <span class="mini-chip">C / C++</span>
+                <span class="mini-chip">Lua</span>
+              </div>
+            </div>
+            <div class="skill-line">
+              <div class="skill-line-title">Données &amp; backend</div>
+              <div class="skill-line-tags">
+                <span class="mini-chip">Gestion de bases de données</span>
+                <span class="mini-chip">Gestion d’API</span>
+              </div>
+            </div>
+            <div class="skill-line">
+              <div class="skill-line-title">Systèmes &amp; réseau</div>
+              <div class="skill-line-tags">
+                <span class="mini-chip">Unix</span>
+                <span class="mini-chip">Environnement réseau IT</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="category-card">
+          <div class="card-label">Gestion de projet</div>
+          <h3>Organisation, cadrage et méthodes</h3>
+          <p class="subline">Des bases utiles pour analyser un besoin, structurer un projet et suivre son avancement avec méthode.</p>
+          <div class="skill-block">
+            <div class="skill-line">
+              <div class="skill-line-title">Cadrage</div>
+              <div class="skill-line-tags">
+                <span class="mini-chip">Recueil des besoins</span>
+                <span class="mini-chip">Étude de faisabilité</span>
+              </div>
+            </div>
+            <div class="skill-line">
+              <div class="skill-line-title">Pilotage</div>
+              <div class="skill-line-tags">
+                <span class="mini-chip">PERT / GANTT</span>
+                <span class="mini-chip">Diagrammes UML</span>
+                <span class="mini-chip">Méthodes agiles</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="category-card">
+          <div class="card-label">Audiovisuel</div>
+          <h3>Création visuelle et sonore</h3>
+          <p class="subline">Des compétences complémentaires pour produire des contenus plus soignés, plus lisibles et plus impactants.</p>
+          <div class="skill-block">
+            <div class="skill-line">
+              <div class="skill-line-title">Production</div>
+              <div class="skill-line-tags">
+                <span class="mini-chip">Montage vidéo</span>
+                <span class="mini-chip">Montage photo</span>
+              </div>
+            </div>
+            <div class="skill-line">
+              <div class="skill-line-title">Technique</div>
+              <div class="skill-line-tags">
+                <span class="mini-chip">Prise et traitement du son</span>
+                <span class="mini-chip">Gestion du fond vert</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="category-card full">
+          <div class="card-label">Langues</div>
+          <h3>Langues vivantes</h3>
+          <div class="languages-panel">
+            <div class="language-card">
+              <div class="language-flag" aria-hidden="true">🇫🇷</div>
+              <div>
+                <div class="language-main">
+                  <div class="language-name">Français</div>
+                  <div class="language-level">Langue maternelle</div>
+                </div>
+                <div class="language-note">Maîtrise complète à l’écrit comme à l’oral.</div>
+              </div>
+            </div>
+            <div class="language-card">
+              <div class="language-flag" aria-hidden="true">🇬🇧</div>
+              <div>
+                <div class="language-main">
+                  <div class="language-name">Anglais</div>
+                  <div class="language-level">Niveau B1</div>
+                </div>
+                <div class="language-note">Progression en cours avec objectif de montée vers un niveau C1 via une formation.</div>
+              </div>
+            </div>
+            <div class="language-card">
+              <div class="language-flag" aria-hidden="true">🇪🇸</div>
+              <div>
+                <div class="language-main">
+                  <div class="language-name">Espagnol</div>
+                  <div class="language-level">Niveau B1</div>
+                </div>
+                <div class="language-note">Capacité à comprendre et communiquer dans des situations courantes.</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="projets" class="section reveal">
+      <div class="section-header">
+        <div>
+          <h2>Projets</h2>
+        </div>
+        
+      </div>
+      <div class="projects-grid">
+        <article class="project-card">
+          <div class="project-top">
+            <div>
+              <h3>Pixel Rush</h3>
+              <div class="project-date">Novembre 2024</div>
+            </div>
+          </div>
+          <div class="project-desc">Jeu 2D à niveaux. Développé en C++.</div>
+          <a class="project-link" href="https://www.notion.so/Pixel-Rush-1753c099d2b281409ee0c48b4bcb8144?pvs=21" target="_blank" rel="noreferrer">Voir la fiche projet</a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-top">
+            <div>
+              <h3>Création Base De Donnée</h3>
+              <div class="project-date">Octobre 2024</div>
+            </div>
+          </div>
+          <div class="project-desc">Création d’une base de donnée pour le comité social d’une grande entreprise.</div>
+          <a class="project-link" href="https://www.notion.so/Cr-ation-Base-De-Donn-e-1753c099d2b2813986b1dff750485dd1?pvs=21" target="_blank" rel="noreferrer">Voir la fiche projet</a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-top">
+            <div>
+              <h3>Tiny Bank</h3>
+              <div class="project-date">Février 2020</div>
+            </div>
+          </div>
+          <div class="project-desc">Programme Python de gestion de trésorerie.</div>
+          <a class="project-link" href="https://www.notion.so/Tiny-Bank-1753c099d2b2814c9271c748a2658b42?pvs=21" target="_blank" rel="noreferrer">Voir la fiche projet</a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-top">
+            <div>
+              <h3>Cahier des charges</h3>
+              <div class="project-date">Janvier 2025</div>
+            </div>
+          </div>
+          <div class="project-desc">Cahier des charges complet pour une maison d’édition fictive.</div>
+          <a class="project-link" href="https://www.notion.so/Cahier-des-charges-1a13c099d2b2808184f3c91023c248f6?pvs=21" target="_blank" rel="noreferrer">Voir la fiche projet</a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-top">
+            <div>
+              <h3>Simulateur de trading</h3>
+              <div class="project-date">Date non renseignée</div>
+            </div>
+          </div>
+          <div class="project-desc">Projet en réflexion, destiné à évoluer vers un outil de simulation et d’apprentissage.</div>
+          <a class="project-link" href="https://www.notion.so/Simulateur-de-trading-3253c099d2b280079348d973275fa937?pvs=21" target="_blank" rel="noreferrer">Voir la fiche projet</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-header">
+        <div>
+          <h2>Diplômes et certifications</h2>
+        </div>
+        
+      </div>
+      <div class="cert-grid">
+        <article class="cert-card">
+          <div class="card-label">En cours</div>
+          <h3>[EN COURS] BUT Informatique</h3>
+          <div class="cert-meta">
+            <div>Organisation : IUT d'Orsay, université Paris-Saclay</div>
+            <div>Description : Parcours développement d'application</div>
+            <div>Date : Depuis 2024</div>
+          </div>
+          <div class="cert-tags">
+            <span class="cert-tag">IUT Orsay</span>
+          </div>
+        </article>
+
+        <article class="cert-card">
+          <div class="card-label">Diplôme</div>
+          <h3>Baccalauréat Scientifique</h3>
+          <div class="cert-meta">
+            <div>Organisation : Lycée Essouriau</div>
+            <div>Description : Mention assez bien</div>
+            <div>Date : 2024</div>
+          </div>
+          <div class="cert-tags">
+            <span class="cert-tag">Numérique &amp; Sciences Informatiques</span>
+            <span class="cert-tag">Mathématiques</span>
+          </div>
+        </article>
+
+        <article class="cert-card">
+          <div class="card-label">Diplôme</div>
+          <h3>Brevet des collèges</h3>
+          <div class="cert-meta">
+            <div>Organisation : Collège Pierre-Mendes France</div>
+            <div>Description : Mention bien</div>
+            <div>Date : 2021</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section reveal">
+      <div class="section-header">
+        <div>
+          <h2>Me retrouver</h2>
+        </div>
+        
+      </div>
+      <div class="contact-grid">
+        <article class="contact-card">
+          <div class="card-label">Contact</div>
+          <h3>Coordonnées</h3>
+          <p class="subline">Disponible pour échanger autour du développement, de projets et d’opportunités d’apprentissage.</p>
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-kicker">Téléphone</div>
+              <div class="contact-value"><a href="tel:+33628340858">06 28 34 08 58</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-kicker">Email</div>
+              <div class="contact-value"><a href="mailto:sachapoyeton@gmail.com">sachapoyeton@gmail.com</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-kicker">Linkedin</div>
+              <div class="contact-value"><a href="https://www.linkedin.com/in/sacha-poyeton-9a80b8173" target="_blank" rel="noreferrer">www.linkedin.com/in/sacha-poyeton-9a80b8173</a></div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Portfolio de Sacha Poyeton — conçu en HTML, CSS et JavaScript.
+  </footer>
+
+  <script>
+    const revealItems = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealItems.forEach((item, index) => {
+      item.style.transitionDelay = `${index * 80}ms`;
+      observer.observe(item);
+    });
+
+    const navLinks = document.querySelectorAll('.nav a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    const stats = document.querySelectorAll('.value');
+    const animateNumber = (el) => {
+      const raw = el.textContent.trim();
+      const target = parseInt(raw.replace(/\D/g, ''), 10);
+      const suffix = raw.replace(/[0-9]/g, '');
+      if (Number.isNaN(target)) return;
+
+      let current = 0;
+      const duration = 1200;
+      const start = performance.now();
+
+      const tick = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        current = Math.floor(target * (1 - Math.pow(1 - progress, 3)));
+        el.textContent = `${current}${suffix}`;
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+    };
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateNumber(entry.target);
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    stats.forEach(stat => statsObserver.observe(stat));
+  </script>
+</body>
+</html>
